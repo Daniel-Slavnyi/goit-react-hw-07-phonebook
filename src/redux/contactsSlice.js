@@ -1,29 +1,53 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { addContact, fetchContacts, deleteContact } from './operations';
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: { items: [] },
+  initialState: { items: [], isLoading: false, error: null },
 
-  reducers: {
-    makeNewUser(state, action) {
-      if (
-        state.items.some(
-          item => item.name.toLowerCase() === action.payload.name.toLowerCase()
-        )
-      ) {
-        return alert(`${action.payload.name} is already in contacts`);
-      }
+  extraReducers: {
+    [fetchContacts.pending](state, action) {
+      state.isLoading = true;
+    },
+    [fetchContacts.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
+    },
+    [fetchContacts.rejected](state, action) {
+      state.error = action.payload;
+    },
 
+    [addContact.pending](state, action) {
+      state.isLoading = true;
+    },
+    [addContact.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
       state.items = [action.payload, ...state.items];
     },
-    deleteUser(state, action) {
-      state.items = state.items.filter(obj => obj.id !== action.payload);
+    [addContact.rejected](state, action) {
+      state.error = action.payload;
+    },
+
+    [deleteContact.pending](state) {
+      state.isLoading = true;
+    },
+    [deleteContact.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const index = state.items.findIndex(
+        contact => contact.id === action.payload.id
+      );
+      state.items.splice(index, 1);
+    },
+    [deleteContact.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });
 
-const { actions, reducer } = contactsSlice;
-
-export const { makeNewUser, deleteUser } = actions;
+const { reducer } = contactsSlice;
 
 export default reducer;

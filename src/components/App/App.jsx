@@ -3,7 +3,20 @@ import Filter from '../Filter/Filter';
 import ContactList from '../ContactList/ContactList';
 import { Wrapper, Title } from './App.styled';
 
+import { useEffect } from 'react';
+import { fetchContacts } from 'redux/operations';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIsLoading, getError } from 'redux/selectors';
+
 export default function App() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getError);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
   return (
     <Wrapper>
       <Title>Phonebook</Title>
@@ -11,6 +24,7 @@ export default function App() {
 
       <Title>Contacts</Title>
       <Filter />
+      {isLoading && !error && <b>Request in progress...</b>}
       <ContactList />
     </Wrapper>
   );

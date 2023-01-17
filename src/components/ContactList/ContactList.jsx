@@ -1,20 +1,24 @@
 import React from 'react';
 import { UlList, Button, Item } from './ContactList.styled';
 
-import { deleteUser } from '../../redux/contactsSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+import { deleteContact } from 'redux/operations';
 
 export default function ContactList() {
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
-  const contacts = useSelector(store => store.contacts.items);
   const filter = useSelector(store => store.filter);
+  console.log('contacts =>', contacts);
+
+  const handleDelete = id => dispatch(deleteContact(id));
 
   const filteredContacts = contacts.filter(obj =>
     obj.name.toLowerCase().trim().includes(filter)
   );
   return (
     <UlList>
-      {filteredContacts.map(({ id, name, number }) => (
+      {filteredContacts.map(({ name, number, id }) => (
         <Item key={id}>
           <p>
             {name} : {number}
@@ -22,7 +26,7 @@ export default function ContactList() {
           <Button
             type="button"
             onClick={() => {
-              dispatch(deleteUser(id));
+              handleDelete(id);
             }}
           ></Button>
         </Item>

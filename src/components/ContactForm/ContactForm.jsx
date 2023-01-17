@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
+
 import { Form, Input, Button, Bg, Label, Span } from './ContactForm.styled';
 
-import { makeNewUser } from '../../redux/contactsSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/operations';
+import { getContacts } from 'redux/selectors';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
   const handleDataUser = e => {
     switch (e.target.name) {
@@ -30,12 +32,20 @@ export default function ContactForm() {
     e.preventDefault();
 
     const newUser = {
-      id: nanoid(),
       name,
       number,
     };
 
-    dispatch(makeNewUser(newUser));
+    const hasContact = contacts.some(
+      obj => obj.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (hasContact) {
+      alert('There is the contact in your list');
+      return;
+    }
+
+    dispatch(addContact(newUser));
 
     setName('');
     setNumber('');
