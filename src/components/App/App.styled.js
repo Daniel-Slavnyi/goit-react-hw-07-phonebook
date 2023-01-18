@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Wrapper = styled.div`
+  position: relative;
   box-sizing: border-box;
   padding-top: 10px;
   padding-bottom: 20px;
@@ -33,4 +34,14 @@ export const Title = styled.h1`
   font-size: 40px;
   font-family: 'Caveat', cursive;
   text-align: center;
+`;
+
+export const Loader = styled.p`
+  font-family: 'Caveat', cursive;
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 350;
+  left: 50%;
+  transform: translateX(-50%);
 `;

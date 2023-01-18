@@ -9,7 +9,6 @@ export default function ContactList() {
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
   const filter = useSelector(store => store.filter);
-  console.log('contacts =>', contacts);
 
   const handleDelete = id => dispatch(deleteContact(id));
 
@@ -17,7 +16,7 @@ export default function ContactList() {
     obj.name.toLowerCase().trim().includes(filter)
   );
   return (
-    <UlList>
+    <UlList className="listItems">
       {filteredContacts.map(({ name, number, id }) => (
         <Item key={id}>
           <p>

@@ -1,7 +1,7 @@
 import ContactForm from '../ContactForm/ContactForm';
 import Filter from '../Filter/Filter';
 import ContactList from '../ContactList/ContactList';
-import { Wrapper, Title } from './App.styled';
+import { Wrapper, Title, Loader } from './App.styled';
 
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/operations';
@@ -24,7 +24,7 @@ export default function App() {
 
       <Title>Contacts</Title>
       <Filter />
-      {isLoading && !error && <b>Request in progress...</b>}
+      {isLoading && !error && <Loader>Request in progress...</Loader>}
       <ContactList />
     </Wrapper>
   );

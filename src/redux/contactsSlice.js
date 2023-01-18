@@ -6,7 +6,7 @@ const contactsSlice = createSlice({
   initialState: { items: [], isLoading: false, error: null },
 
   extraReducers: {
-    [fetchContacts.pending](state, action) {
+    [fetchContacts.pending](state) {
       state.isLoading = true;
     },
     [fetchContacts.fulfilled](state, action) {
@@ -18,7 +18,7 @@ const contactsSlice = createSlice({
       state.error = action.payload;
     },
 
-    [addContact.pending](state, action) {
+    [addContact.pending](state) {
       state.isLoading = true;
     },
     [addContact.fulfilled](state, action) {
